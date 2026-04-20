@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quyết Toán Thuế TNCN 2026 🇻🇳</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Be Vietnam Pro', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #d42027 0%, #b71c1c 30%, #c62828 60%, #d32f2f 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Vietnam Flag Background Star */
+        .bg-star {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            opacity: 0.06;
+            z-index: 0;
+            pointer-events: none;
+            animation: pulse-star 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-star {
+            0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.09; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Floating Stars */
+        .floating-star {
+            position: fixed;
+            color: rgba(255, 215, 0, 0.15);
+            animation: float-up linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 16px;
+            width: 100%;
+            background: #f8fafc;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #d42027;
+            box-shadow: 0 0 0 3px rgba(212, 32, 39, 0.15);
+            background: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d42027, #b71c1c);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(212, 32, 39, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(212, 32, 39, 0.5);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.5);
+        }
+
+        .result-highlight {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid #f59e0b;
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+        }
+
+        .tax-bracket-active {
+            background: linear-gradient(135deg, #fef2f2, #fecaca) !important;
+            border-left: 4px solid #d42027 !important;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 12px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
+            transition: width 0.8s ease;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .tab-btn.active {
+            background: #d42027;
+            color: white;
+            box-shadow: 0 4px 15px rgba(212, 32, 39, 0.3);
+        }
+        .tab-btn:not(.active) {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .tab-btn:not(.active):hover {
+            background: #e2e8f0;
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            animation: badge-pulse 2s infinite;
+        }
+        @keyframes badge-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        }
+
+        .star-svg { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)); }
+
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            background: #1e293b;
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 10px 14px;
+            position: absolute;
+            z-index: 50;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .animate-in {
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(212, 32, 39, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(212, 32, 39, 0.7); }
+    </style>
+</head>
+<body>
+
+<!-- Background Star -->
+<svg class="bg-star" viewBox="0 0 600 600">
+    <polygon points="300,30 355,195 530,195 390,300 445,465 300,370 155,465 210,300 70,195 245,195" fill="#FFD700"/>
+</svg>
+
+<!-- Floating Stars Container -->
+<div id="floatingStars"></div>
+
+<!-- Main Content -->
+<div class="relative z-10 max-w-5xl mx-auto px-4 py-8">
+    
+    <!-- Header -->
+    <div class="text-center mb-8 animate-in">
+        <div class="flex items-center justify-center gap-4 mb-4">
+            <svg width="60" height="60" viewBox="0 0 600 600" class="star-svg">
+                <polygon points="300,30 355,195 530,195 390,300 445,465 300,370 155,465 210,300 70,195 245,195" fill="#FFD700"/>
+            </svg>
+            <div>
+                <h1 class="text-4xl md:text-5xl font-black text-yellow-400 drop-shadow-lg tracking-tight">
+                    QUYẾT TOÁN THUẾ TNCN
+                </h1>
+                <div class="flex items-center justify-center gap-3 mt-1">
+                    <span class="text-white text-xl font-bold">Năm 2026</span>
+                    <span class="badge-new">LUẬT MỚI</span>
+                </div>
+            </div>
+            <svg width="60" height="60" viewBox="0 0 600 600" class="star-svg">
+                <polygon points="300,30 355,195 530,195 390,300 445,465 300,370 155,465 210,300 70,195 245,195" fill="#FFD700"/>
+            </svg>
+        </div>
+        <p class="text-yellow-100 text-base md:text-lg font-medium max-w-2xl mx-auto">
+            Cập nhật theo Luật Thuế TNCN số 109/2025/QH15 & Nghị quyết 110/2025/UBTVQH15
+        </p>
+        <div class="flex items-center justify-center gap-4 mt-3 text-yellow-200 text-sm flex-wrap">
+            <span>✅ Biểu thuế 5 bậc mới</span>
+            <span>•</span>
+            <span>✅ Giảm trừ 15.5tr/tháng</span>
+            <span>•</span>
+            <span>✅ NPT 6.2tr/người</span>
+        </div>
+    </div>
+
+    <!-- Tax Type Tabs -->
+    <div class="card p-6 mb-6 animate-in" style="animation-delay: 0.2s;">
+        <div class="flex flex-wrap gap-3 mb-6">
+            <button class="tab-btn active" onclick="switchTab('resident')" id="tab-resident">
+                👤 Cá nhân cư trú
+            </button>
+            <button class="tab-btn" onclick="switchTab('nonresident')" id="tab-nonresident">
+                ✈️ Cá nhân không cư trú
+            </button>
+        </div>
+
+        <!-- Resident Form -->
+        <div id="form-resident">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Tổng thu nhập năm -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        💰 Tổng thu nhập từ lương cả năm (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Tổng thu nhập trước thuế (gross) từ tiền lương, tiền công trong năm 2026. Bao gồm lương, thưởng, phụ cấp chịu thuế.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="grossIncome" class="input-field" placeholder="Ví dụ: 480.000.000" oninput="formatCurrency(this)">
+                </div>
+
+                <!-- Số tháng làm việc -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        📅 Số tháng làm việc trong năm
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Số tháng phát sinh thu nhập trong năm 2026 (tối đa 12 tháng). Mức giảm trừ gia cảnh được tính theo số tháng này.</span>
+                        </span>
+                    </label>
+                    <input type="number" id="months" class="input-field" value="12" min="1" max="12">
+                </div>
+
+                <!-- Thu nhập đã tạm tính thuế -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        🏦 Đã tạm nộp thuế trong năm (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Tổng số thuế TNCN đã khấu trừ/nộp tạm trong năm. Xem trên quyết toán thuế từ đơn vị trả thuế hoặc hóa đơn nộp thuế.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="taxPaid" class="input-field" placeholder="Ví dụ: 30.000.000" oninput="formatCurrency(this)">
+                </div>
+
+                <!-- Số người phụ thuộc -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        👨‍👩‍👧 Số người phụ thuộc
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Số người phụ thuộc đã đăng ký. Mỗi NPT được giảm trừ 6.200.000 đ/tháng (Nghị quyết 110/2025). NPT: con dưới 18 tuổi, con đang học đại học (dưới 22 tuổi), vợ/chồng không có thu nhập...</span>
+                        </span>
+                    </label>
+                    <input type="number" id="dependents" class="input-field" value="0" min="0" max="20">
+                </div>
+
+                <!-- Bảo hiểm -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        🛡️ Tổng bảo hiểm bắt buộc cả năm (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Tổng tiền đóng BHXH (8%), BHYT (1.5%), BHTN (1%) trong năm. Bấm "Tự tính" để tính tự động theo tỷ lệ 10.5% trên thu nhập.</span>
+                        </span>
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="text" id="insurance" class="input-field" placeholder="Ví dụ: 50.400.000" oninput="formatCurrency(this)">
+                        <button onclick="calcInsurance()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-600 transition whitespace-nowrap" title="Tính tự động 10.5%">Tự tính</button>
+                    </div>
+                </div>
+
+                <!-- Thu nhập miễn thuế -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        🎁 Các khoản thu nhập được miễn/thuế (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Các khoản không chịu thuế: phụ cấp ăn trưa, phụ cấp điện thoại, trang phục... theo quy định. Luật mới có 21 khoản miễn thuế.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="exemptIncome" class="input-field" placeholder="Ví dụ: 6.000.000" oninput="formatCurrency(this)">
+                </div>
+
+                <!-- Từ thiện -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        ❤️ Đóng góp từ thiện, nhân đạo (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Các khoản đóng góp cho quỹ từ thiện, nhân đạo, khuyến học có chứng từ hợp lệ. Không vượt quá thu nhập tính thuế.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="charity" class="input-field" placeholder="Ví dụ: 5.000.000" oninput="formatCurrency(this)">
+                </div>
+
+                <!-- Bảo hiểm tự nguyện -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        📗 Bảo hiểm tự nguyện / Quỹ hưu trí (VNĐ)
+                        <span class="info-tooltip">
+                            <span class="text-red-500"> ℹ️</span>
+                            <span class="tooltip-text">Theo luật mới, tối đa được giảm trừ 1.000.000 đ/tháng (12.000.000 đ/năm) cho đóng bảo hiểm tự nguyện và quỹ hưu trí tự nguyện.</span>
+                        </span>
+                    </label>
+                    <input type="text" id="voluntaryInsurance" class="input-field" placeholder="Tối đa 12.000.000/năm" oninput="formatCurrency(this)">
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-wrap gap-4 mt-8 justify-center">
+                <button onclick="calculateTax()" class="btn-primary flex items-center gap-2">
+                    <span class="text-2xl">🧮</span> Tính Quyết Toán Thuế
+                </button>
+                <button onclick="resetForm()" class="btn-secondary flex items-center gap-2">
+                    <span class="text-2xl">🔄</span> Nhập lại
+                </button>
+            </div>
+        </div>
+
+        <!-- Non-Resident Form -->
+        <div id="form-nonresident" style="display: none;">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        💰 Tổng thu nhập từ lương (VNĐ)
+                    </label>
+                    <input type="text" id="nrGrossIncome" class="input-field" placeholder="Ví dụ: 300.000.000" oninput="formatCurrency(this)">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        🏦 Đã tạm nộp thuế (VNĐ)
+                    </label>
+                    <input type="text" id="nrTaxPaid" class="input-field" placeholder="Ví dụ: 60.000.000" oninput="formatCurrency(this)">
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4">
+                <p class="text-amber-800 text-sm">
+                    <strong>⚠️ Lưu ý:</strong> Cá nhân không cư trú áp dụng thuế suất <strong>20%</strong> trên tổng thu nhập.
+                    <br>Theo Điều 21 Luật Thuế TNCN 2025: <em>Không áp dụng biểu thuế lũy tiến, không được giảm trừ gia cảnh.</em>
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-4 mt-6 justify-center">
+                <button onclick="calculateNRTax()" class="btn-primary flex items-center gap-2">
+                    <span class="text-2xl">🧮</span> Tính Thuế
+                </button>
+                <button onclick="resetNRForm()" class="btn-secondary flex items-center gap-2">
+                    <span class="text-2xl">🔄</span> Nhập lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="hidden animate-in">
+        <div class="card p-6 mb-6">
+            <h2 class="text-2xl font-black text-gray-800 mb-6 flex items-center gap-2">
+                📊 KẾT QUẢ QUYẾT TOÁN THUẾ
+                <span class="badge-new">2026</span>
+            </h2>
+
+            <!-- Summary -->
+            <div id="summarySection" class="mb-6"></div>
+
+            <!-- Detail Steps -->
+            <div id="detailSection" class="mb-6"></div>
+
+            <!-- Tax Bracket Table -->
+            <div id="bracketSection" class="mb-6"></div>
+
+            <!-- Conclusion -->
+            <div id="conclusionSection"></div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="card p-5 mb-6">
+            <div class="flex items-start gap-3">
+                <span class="text-2xl">⚖️</span>
+                <div>
+                    <h4 class="font-bold text-gray-700 text-sm">Lưu ý quan trọng</h4>
+                    <p class="text-gray-500 text-xs mt-1 leading-relaxed">
+                        Công cụ này mang tính chất tham khảo, được cập nhật theo Luật Thuế TNCN số 109/2025/QH15 và Nghị quyết 110/2025/UBTVQH15.
+                        Kết quả có thể sai lệch tùy từng trường hợp cụ thể. Vui lòng tham khảo ý kiến chuyên gia thuế hoặc cơ quan thuế để có kết quả chính xác nhất.
+                        Biểu thuế 5 bậc có hiệu lực thi hành từ 01/07/2026 nhưng áp dụng cho toàn bộ kỳ tính thuế năm 2026.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tax Bracket Reference Table -->
+        <div class="card p-6 mb-8">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">📊 Biểu thuế lũy tiến từng phần 2026 (5 bậc)</h3>
+            <p class="text-sm text-gray-500 mb-4">Theo Điều 9 Luật Thuế TNCN số 109/2025/QH15 — Áp dụng từ 01/01/2026</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-red-50">
+                            <th class="px-4 py-3 text-left font-bold text-red-700 rounded-tl-xl">Bậc</th>
+                            <th class="px-4 py-3 text-left font-bold text-red-700">Thu nhập tính thuế/tháng</th>
+                            <th class="px-4 py-3 text-left font-bold text-red-700">Thu nhập tính thuế/năm</th>
+                            <th class="px-4 py-3 text-center font-bold text-red-700">Thuế suất</th>
+                            <th class="px-4 py-3 text-right font-bold text-red-700 rounded-tr-xl">Công thức rút gọn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100" id="ref-bracket-1">
+                            <td class="px-4 py-3 font-bold text-center">1</td>
+                            <td class="px-4 py-3">Đến 10 triệu</td>
+                            <td class="px-4 py-3">Đến 120 triệu</td>
+                            <td class="px-4 py-3 text-center font-bold text-green-600">5%</td>
+                            <td class="px-4 py-3 text-right text-gray-600">5% × TNTT</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 bg-gray-50" id="ref-bracket-2">
+                            <td class="px-4 py-3 font-bold text-center">2</td>
+                            <td class="px-4 py-3">Trên 10 - 30 triệu</td>
+                            <td class="px-4 py-3">Trên 120 - 360 triệu</td>
+                            <td class="px-4 py-3 text-center font-bold text-yellow-600">10%</td>
+                            <td class="px-4 py-3 text-right text-gray-600">10% × TNTT − 0.5 triệu</td>
+                        </tr>
+                        <tr class="border-b border-gray-100" id="ref-bracket-3">
+                            <td class="px-4 py-3 font-bold text-center">3</td>
+                            <td class="px-4 py-3">Trên 30 - 60 triệu</td>
+                            <td class="px-4 py-3">Trên 360 - 720 triệu</td>
+                            <td class="px-4 py-3 text-center font-bold text-orange-600">20%</td>
+                            <td class="px-4 py-3 text-right text-gray-600">20% × TNTT − 3.5 triệu</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 bg-gray-50" id="ref-bracket-4">
+                            <td class="px-4 py-3 font-bold text-center">4</td>
+                            <td class="px-4 py-3">Trên 60 - 100 triệu</td>
+                            <td class="px-4 py-3">Trên 720 - 1.200 triệu</td>
+                            <td class="px-4 py-3 text-center font-bold text-red-500">30%</td>
+                            <td class="px-4 py-3 text-right text-gray-600">30% × TNTT − 9.5 triệu</td>
+                        </tr>
+                        <tr id="ref-bracket-5">
+                            <td class="px-4 py-3 font-bold text-center rounded-bl-xl">5</td>
+                            <td class="px-4 py-3">Trên 100 triệu</td>
+                            <td class="px-4 py-3">Trên 1.200 triệu</td>
+                            <td class="px-4 py-3 text-center font-bold text-red-700">35%</td>
+                            <td class="px-4 py-3 text-right text-gray-600 rounded-br-xl">35% × TNTT − 14.5 triệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-yellow-200 text-sm pb-8 no-print">
+        <div class="flex items-center justify-center gap-2 mb-2">
+            <svg width="20" height="20" viewBox="0 0 600 600">
+                <polygon points="300,30 355,195 530,195 390,300 445,465 300,370 155,465 210,300 70,195 245,195" fill="#FFD700"/>
+            </svg>
+            <span class="font-bold">Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam</span>
+            <svg width="20" height="20" viewBox="0 0 600 600">
+                <polygon points="300,30 355,195 530,195 390,300 445,465 300,370 155,465 210,300 70,195 245,195" fill="#FFD700"/>
+            </svg>
+        </div>
+        <p class="text-yellow-300/70">Độc lập - Tự do - Hạnh phúc</p>
+        <p class="text-yellow-300/50 text-xs mt-2">© 2026 — Công cụ tính thuế TNCN theo luật mới</p>
+    </div>
+</div>
+
+<script>
+// ========== CONSTANTS 2026 ==========
+const PERSONAL_DEDUCTION = 15500000; // 15.5 triệu/tháng
+const DEPENDENT_DEDUCTION = 6200000; // 6.2 triệu/người/tháng
+const INSURANCE_RATE = 0.105; // 10.5%
+const MAX_VOLUNTARY_INSURANCE = 12000000; // 12 triệu/năm
+const NR_TAX_RATE = 0.20; // 20% for non-resident
+
+// Biểu thuế lũy tiến 5 bậc 2026 (theo năm)
+const TAX_BRACKETS_YEARLY = [
+    { min: 0, max: 120000000, rate: 0.05, deduction: 0 },
+    { min: 120000000, max: 360000000, rate: 0.10, deduction: 6000000 },
+    { min: 360000000, max: 720000000, rate: 0.20, deduction: 42000000 },
+    { min: 720000000, max: 1200000000, rate: 0.30, deduction: 114000000 },
+    { min: 1200000000, max: Infinity, rate: 0.35, deduction: 174000000 }
+];
+
+// ========== UTILITY FUNCTIONS ==========
+function parseCurrency(str) {
+    if (!str) return 0;
+    return parseInt(str.replace(/[^\d]/g, '')) || 0;
+}
+
+function formatNumber(num) {
+    if (num === 0) return '0';
+    return Math.round(num).toLocaleString('vi-VN');
+}
+
+function formatCurrency(input) {
+    let value = input.value.replace(/[^\d]/g, '');
+    if (value) {
+        input.value = parseInt(value).toLocaleString('vi-VN');
+    }
+}
+
+function calcInsurance() {
+    const gross = parseCurrency(document.getElementById('grossIncome').value);
+    const insurance = Math.round(gross * INSURANCE_RATE);
+    document.getElementById('insurance').value = formatNumber(insurance);
+}
+
+// ========== TAB SWITCHING ==========
+function switchTab(type) {
+    document.getElementById('form-resident').style.display = type === 'resident' ? 'block' : 'none';
+    document.getElementById('form-nonresident').style.display = type === 'nonresident' ? 'block' : 'none';
+    document.getElementById('tab-resident').classList.toggle('active', type === 'resident');
+    document.getElementById('tab-nonresident').classList.toggle('active', type === 'nonresident');
+    document.getElementById('results').classList.add('hidden');
+}
+
+// ========== RESIDENT TAX CALCULATION ==========
+function calculateTax() {
+    const grossIncome = parseCurrency(document.getElementById('grossIncome').value);
+    const months = parseInt(document.getElementById('months').value) || 12;
+    const taxPaid = parseCurrency(document.getElementById('taxPaid').value);
+    const dependents = parseInt(document.getElementById('dependents').value) || 0;
+    const insurance = parseCurrency(document.getElementById('insurance').value);
+    const exemptIncome = parseCurrency(document.getElementById('exemptIncome').value);
+    const charity = parseCurrency(document.getElementById('charity').value);
+    const voluntaryInsurance = Math.min(parseCurrency(document.getElementById('voluntaryInsurance').value), MAX_VOLUNTARY_INSURANCE);
+
+    if (!grossIncome) {
+        alert('Vui lòng nhập tổng thu nhập!');
+        return;
+    }
+
+    if (months < 1 || months > 12) {
+        alert('Số tháng làm việc phải từ 1 đến 12!');
+        return;
+    }
+
+    // Step 1: Thu nhập chịu thuế
+    const taxableIncome = grossIncome - exemptIncome;
+
+    // Step 2: Các khoản giảm trừ
+    const personalDeduction = PERSONAL_DEDUCTION * months;
+    const dependentDeduction = DEPENDENT_DEDUCTION * dependents * months;
+    const totalDeductions = personalDeduction + dependentDeduction + insurance + charity + voluntaryInsurance;
+
+    // Step 3: Thu nhập tính thuế
+    const assessableIncome = Math.max(0, taxableIncome - totalDeductions);
+
+    // Step 4: Tính thuế theo bậc lũy tiến
+    const taxDetails = calculateProgressiveTax(assessableIncome);
+    const totalTax = taxDetails.totalTax;
+
+    // Step 5: Quyết toán
+    const difference = totalTax - taxPaid;
+    const effectiveRate = grossIncome > 0 ? (totalTax / grossIncome * 100) : 0;
+
+    // Render results
+    renderResults({
+        grossIncome,
+        months,
+        exemptIncome,
+        taxableIncome,
+        personalDeduction,
+        dependentDeduction,
+        dependents,
+        insurance,
+        charity,
+        voluntaryInsurance,
+        totalDeductions,
+        assessableIncome,
+        taxDetails,
+        totalTax,
+        taxPaid,
+        difference,
+        effectiveRate
+    });
+
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function calculateProgressiveTax(income) {
+    if (income <= 0) return { brackets: [], totalTax: 0, activeBracket: 0 };
+
+    let remaining = income;
+    let totalTax = 0;
+    let brackets = [];
+    let activeBracket = 0;
+
+    for (let i = 0; i < TAX_BRACKETS_YEARLY.length; i++) {
+        const bracket = TAX_BRACKETS_YEARLY[i];
+        const bracketRange = bracket.max === Infinity ? Infinity : bracket.max - bracket.min;
+        
+        if (remaining <= 0) break;
+
+        const taxableInBracket = bracket.max === Infinity ? remaining : Math.min(remaining, bracketRange);
+        const taxInBracket = taxableInBracket * bracket.rate;
+
+        if (taxableInBracket > 0) {
+            brackets.push({
+                level: i + 1,
+                range: `${formatNumber(bracket.min)} - ${bracket.max === Infinity ? 'vô hạn' : formatNumber(bracket.max)}`,
+                taxable: taxableInBracket,
+                rate: bracket.rate,
+                tax: taxInBracket
+            });
+            activeBracket = i + 1;
+        }
+
+        totalTax += taxInBracket;
+        remaining -= taxableInBracket;
+    }
+
+    return { brackets, totalTax, activeBracket };
+}
+
+function renderResults(data) {
+    // Summary
+    const summaryHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 rounded-xl p-5 text-center border border-blue-100">
+                <div class="text-blue-600 text-sm font-semibold mb-1">Tổng thu nhập Gross</div>
+                <div class="text-2xl font-black text-blue-800">${formatNumber(data.grossIncome)} <span class="text-sm font-normal">đ</span></div>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-5 text-center border border-orange-100">
+                <div class="text-orange-600 text-sm font-semibold mb-1">Thuế TNCN phải nộp</div>
+                <div class="text-2xl font-black text-orange-700">${formatNumber(data.totalTax)} <span class="text-sm font-normal">đ</span></div>
+                <div class="text-xs text-gray-500 mt-1">Suất hiệu dụng: ${data.effectiveRate.toFixed(2)}%</div>
+            </div>
+            <div class="${data.difference > 0 ? 'bg-red-50 border-red-200' : data.difference < 0 ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'} rounded-xl p-5 text-center border">
+                <div class="${data.difference > 0 ? 'text-red-600' : data.difference < 0 ? 'text-green-600' : 'text-gray-600'} text-sm font-semibold mb-1">
+                    ${data.difference > 0 ? '🔴 Phải nộp thêm' : data.difference < 0 ? '🟢 Được hoàn lại' : '✅ Đã đủ'}
+                </div>
+                <div class="text-2xl font-black ${data.difference > 0 ? 'text-red-700' : data.difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                    ${formatNumber(Math.abs(data.difference))} <span class="text-sm font-normal">đ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Effective Rate Progress Bar -->
+        <div class="mb-2">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Thuế suất hiệu dụng</span>
+                <span class="font-bold">${data.effectiveRate.toFixed(2)}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${Math.min(data.effectiveRate / 35 * 100, 100)}%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+                <span>0%</span>
+                <span>10%</span>
+                <span>20%</span>
+                <span>35%</span>
+            </div>
+        </div>
+    `;
+
+    // Detail Steps
+    let detailHTML = `
+        <h3 class="text-lg font-bold text-gray-800 mb-4">📝 Chi tiết bước tính</h3>
+        <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <span class="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                <div>
+                    <div class="font-semibold text-gray-700">Thu nhập chịu thuế</div>
+                    <div class="text-sm text-gray-600">
+                        Tổng thu nhập ${formatNumber(data.grossIncome)} ${data.exemptIncome > 0 ? `− Miễn thuế ${formatNumber(data.exemptIncome)}` : ''}
+                        = <strong class="text-blue-700">${formatNumber(data.taxableIncome)} đ</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <span class="bg-green-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">2</span>
+                <div>
+                    <div class="font-semibold text-gray-700">Các khoản giảm trừ</div>
+                    <div class="text-sm text-gray-600 space-y-1 mt-1">
+                        <div>• Giảm trừ bản thân: 15.500.000 × ${data.months} tháng = <strong>${formatNumber(data.personalDeduction)} đ</strong></div>
+                        ${data.dependents > 0 ? `<div>• Giảm trừ ${data.dependents} NPT: 6.200.000 × ${data.dependents} × ${data.months} tháng = <strong>${formatNumber(data.dependentDeduction)} đ</strong></div>` : ''}
+                        ${data.insurance > 0 ? `<div>• Bảo hiểm bắt buộc: <strong>${formatNumber(data.insurance)} đ</strong></div>` : ''}
+                        ${data.voluntaryInsurance > 0 ? `<div>• BH tự nguyện / Quỹ hưu trí: <strong>${formatNumber(data.voluntaryInsurance)} đ</strong></div>` : ''}
+                        ${data.charity > 0 ? `<div>• Từ thiện, nhân đạo: <strong>${formatNumber(data.charity)} đ</strong></div>` : ''}
+                        <div class="pt-1 border-t border-gray-200 font-bold text-green-700">Tổng giảm trừ: ${formatNumber(data.totalDeductions)} đ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 result-highlight">
+                <span class="bg-amber-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">3</span>
+                <div>
+                    <div class="font-semibold text-gray-700">Thu nhập tính thuế</div>
+                    <div class="text-sm text-gray-600">
+                        ${formatNumber(data.taxableIncome)} − ${formatNumber(data.totalDeductions)}
+                        = <strong class="text-amber-700 text-lg">${formatNumber(data.assessableIncome)} đ</strong>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        ~ ${formatNumber(Math.round(data.assessableIncome / data.months))} đ/tháng
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Tax Bracket Breakdown
+    let bracketHTML = `
+        <h3 class="text-lg font-bold text-gray-800 mt-6 mb-4">💹 Phân bổ thuế theo bậc</h3>
+    `;
+    if (data.assessableIncome > 0) {
+        bracketHTML += `
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-3 text-left font-bold text-gray-700">Bậc</th>
+                            <th class="px-4 py-3 text-left font-bold text-gray-700">Phạm vi</th>
+                            <th class="px-4 py-3 text-right font-bold text-gray-700">TN tính thuế</th>
+                            <th class="px-4 py-3 text-center font-bold text-gray-700">Suất</th>
+                            <th class="px-4 py-3 text-right font-bold text-gray-700">Thuế phải nộp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        for (const b of data.taxDetails.brackets) {
+            const isActive = b.level === data.taxDetails.activeBracket;
+            bracketHTML += `
+                <tr class="${isActive ? 'tax-bracket-active' : 'border-b border-gray-100'}">
+                    <td class="px-4 py-3 font-bold">${b.level}</td>
+                    <td class="px-4 py-3">${b.range} đ</td>
+                    <td class="px-4 py-3 text-right">${formatNumber(b.taxable)} đ</td>
+                    <td class="px-4 py-3 text-center font-bold">${(b.rate * 100).toFixed(0)}%</td>
+                    <td class="px-4 py-3 text-right font-bold text-red-600">${formatNumber(b.tax)} đ</td>
+                </tr>
+            `;
+        }
+        bracketHTML += `
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-red-50 font-bold">
+                            <td colspan="4" class="px-4 py-3 text-right text-red-700">TỔNG CỘNG:</td>
+                            <td class="px-4 py-3 text-right text-red-700 text-lg">${formatNumber(data.totalTax)} đ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        `;
+    } else {
+        bracketHTML += `
+            <div class="bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+                <div class="text-4xl mb-2">🎉</div>
+                <div class="text-green-700 font-bold text-lg">Thu nhập tính thuế = 0</div>
+                <div class="text-green-600 text-sm mt-1">Sau khi trừ các khoản giảm trừ, thu nhập tính thuế bằng 0 → Không phải nộp thuế TNCN</div>
+            </div>
+        `;
+    }
+
+    // Conclusion
+    let conclusionHTML = `
+        <div class="mt-6 p-6 rounded-2xl ${data.difference > 0 ? 'bg-red-50 border-2 border-red-200' : data.difference < 0 ? 'bg-green-50 border-2 border-green-200' : 'bg-gray-50 border-2 border-gray-200'}">
+            <h3 class="text-xl font-black text-center mb-3 ${data.difference > 0 ? 'text-red-700' : data.difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                ${data.difference > 0 ? '🔴 KẾT QUẢ: PHẢI NỘP THÊM THUẾ' : data.difference < 0 ? '🟢 KẾT QUẢ: ĐƯỢC HOÀN THUẾ' : '✅ KẾT QUẢ: ĐÃ NỘP ĐỦ'}
+            </h3>
+            <div class="text-center">
+                <div class="text-3xl font-black ${data.difference > 0 ? 'text-red-700' : data.difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                    ${data.difference === 0 ? '0' : (data.difference < 0 ? '+' : '') + formatNumber(data.difference)} đ
+                    ${data.difference < 0 ? '<span class="text-lg font-normal text-green-600">(hoàn lại)</span>' : ''}
+                </div>
+            </div>
+            <div class="text-center text-sm text-gray-500 mt-3">
+                Thuế phải nộp: ${formatNumber(data.totalTax)} đ | Đã nộp: ${formatNumber(data.taxPaid)} đ
+            </div>
+        </div>
+    `;
+
+    document.getElementById('summarySection').innerHTML = summaryHTML;
+    document.getElementById('detailSection').innerHTML = detailHTML;
+    document.getElementById('bracketSection').innerHTML = bracketHTML;
+    document.getElementById('conclusionSection').innerHTML = conclusionHTML;
+
+    // Highlight active bracket in reference table
+    for (let i = 1; i <= 5; i++) {
+        const row = document.getElementById(`ref-bracket-${i}`);
+        if (row) {
+            row.classList.remove('tax-bracket-active');
+            if (i === data.taxDetails.activeBracket) {
+                row.classList.add('tax-bracket-active');
+            }
+        }
+    }
+}
+
+// ========== NON-RESIDENT TAX CALCULATION ==========
+function calculateNRTax() {
+    const grossIncome = parseCurrency(document.getElementById('nrGrossIncome').value);
+    const taxPaid = parseCurrency(document.getElementById('nrTaxPaid').value);
+
+    if (!grossIncome) {
+        alert('Vui lòng nhập tổng thu nhập!');
+        return;
+    }
+
+    const tax = grossIncome * NR_TAX_RATE;
+    const difference = tax - taxPaid;
+    const effectiveRate = grossIncome > 0 ? (tax / grossIncome * 100) : 0;
+
+    const html = `
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 rounded-xl p-5 text-center border border-blue-100">
+                <div class="text-blue-600 text-sm font-semibold mb-1">Tổng thu nhập</div>
+                <div class="text-2xl font-black text-blue-800">${formatNumber(grossIncome)} đ</div>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-5 text-center border border-orange-100">
+                <div class="text-orange-600 text-sm font-semibold mb-1">Thuế TNCN (20%)</div>
+                <div class="text-2xl font-black text-orange-700">${formatNumber(tax)} đ</div>
+            </div>
+            <div class="${difference > 0 ? 'bg-red-50 border-red-200' : difference < 0 ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'} rounded-xl p-5 text-center border">
+                <div class="${difference > 0 ? 'text-red-600' : difference < 0 ? 'text-green-600' : 'text-gray-600'} text-sm font-semibold mb-1">
+                    ${difference > 0 ? '🔴 Phải nộp thêm' : difference < 0 ? '🟢 Được hoàn lại' : '✅ Đã đủ'}
+                </div>
+                <div class="text-2xl font-black ${difference > 0 ? 'text-red-700' : difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                    ${formatNumber(Math.abs(difference))} đ
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+            <div class="font-semibold text-amber-800 mb-2">📐 Chi tiết:</div>
+            <div class="text-sm text-amber-700 space-y-1">
+                <div>• Thuế suất: <strong>20%</strong> (theo Điều 21 Luật Thuế TNCN 2025)</div>
+                <div>• Công thức: ${formatNumber(grossIncome)} × 20% = <strong>${formatNumber(tax)} đ</strong></div>
+                <div>• Đã nộp: ${formatNumber(taxPaid)} đ</div>
+                <div>• Chênh lệch: <strong>${formatNumber(difference)} đ</strong></div>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-2xl ${difference > 0 ? 'bg-red-50 border-2 border-red-200' : difference < 0 ? 'bg-green-50 border-2 border-green-200' : 'bg-gray-50 border-2 border-gray-200'}">
+            <h3 class="text-xl font-black text-center ${difference > 0 ? 'text-red-700' : difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                ${difference > 0 ? '🔴 PHẢI NỘP THÊM' : difference < 0 ? '🟢 ĐƯỢC HOÀN THUẾ' : '✅ ĐÃ ĐỦ'}
+            </h3>
+            <div class="text-3xl font-black text-center mt-2 ${difference > 0 ? 'text-red-700' : difference < 0 ? 'text-green-700' : 'text-gray-700'}">
+                ${difference === 0 ? '0' : formatNumber(Math.abs(difference))} đ
+            </div>
+        </div>
+    `;
+
+    document.getElementById('summarySection').innerHTML = html;
+    document.getElementById('detailSection').innerHTML = '';
+    document.getElementById('bracketSection').innerHTML = '';
+    document.getElementById('conclusionSection').innerHTML = '';
+
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ========== RESET ==========
+function resetForm() {
+    document.getElementById('grossIncome').value = '';
+    document.getElementById('months').value = '12';
+    document.getElementById('taxPaid').value = '';
+    document.getElementById('dependents').value = '0';
+    document.getElementById('insurance').value = '';
+    document.getElementById('exemptIncome').value = '';
+    document.getElementById('charity').value = '';
+    document.getElementById('voluntaryInsurance').value = '';
+    document.getElementById('results').classList.add('hidden');
+}
+
+function resetNRForm() {
+    document.getElementById('nrGrossIncome').value = '';
+    document.getElementById('nrTaxPaid').value = '';
+    document.getElementById('results').classList.add('hidden');
+}
+
+// ========== FLOATING STARS ==========
+function createFloatingStars() {
+    const container = document.getElementById('floatingStars');
+    const starSVG = `<svg width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 63,38 98,38 70,59 80,95 50,73 20,95 30,59 2,38 37,38" fill="#FFD700"/></svg>`;
+    
+    for (let i = 0; i < 15; i++) {
+        const star = document.createElement('div');
+        star.className = 'floating-star';
+        star.innerHTML = starSVG;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.animationDuration = (8 + Math.random() * 12) + 's';
+        star.style.animationDelay = (Math.random() * 10) + 's';
+        star.style.fontSize = (12 + Math.random() * 16) + 'px';
+        container.appendChild(star);
+    }
+}
+
+// Initialize
+createFloatingStars();
+</script>
+
+</body>
+</html>
